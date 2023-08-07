@@ -1,0 +1,20 @@
+services:
+  app:
+    build:
+      context: ./docker/php/
+      args:
+        - USER_ID
+        - GROUP_ID
+    working_dir: /var/www/app
+    volumes: 
+      - .:/var/www/app
+    ports:
+      - 8000:8000
+  db:
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: example
+    volumes:
+      - ./docker/mariadb/initdb:/docker-entrypoint-initdb.d
+    ports:
+      - 3307:3306
