@@ -17,7 +17,7 @@ class Order extends ActiveRecord
         return [
             [['owner_id', 'ticker', 'side', 'type', 'quantity'], 'required'],
             ['price', 'number'],
-            [['id'], 'safe'],
+            [['id', 'status'], 'safe'],
         ];
     }
 }
