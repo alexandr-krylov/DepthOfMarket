@@ -23,7 +23,7 @@ class m230707_130305_createOrdersTable extends Migration
             'filled' => $this->integer()->defaultValue(0),
             'status' => $this->integer()->notNull(),
             'created_at' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
-            'updated_at' => $this->dateTime(),
+            'updated_at' => $this->dateTime()->notNull()->defaultExpression('\'0000-00-00 00:00:00\' ON UPDATE CURRENT_TIMESTAMP'),
         ]);
     }
 
