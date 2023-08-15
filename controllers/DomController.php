@@ -10,8 +10,9 @@ use yii\db\Query;
 
 class DomController extends Controller
 {
-    public function actionView($ticker)
+    public function actionView()
     {
+        $ticker = $this->request->get('ticker');
         $redOrders = (new Query())
         ->select(['price', 'quantity' => 'SUM(quantity - filled)', 'volume' => 'price * SUM(quantity - filled)', 'side'])
         ->from('orders')

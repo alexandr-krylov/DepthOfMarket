@@ -15,7 +15,7 @@ class m230707_130305_createOrdersTable extends Migration
         $this->createTable('{{%orders}}', [
             'id' => $this->primaryKey(),
             'ticker' => $this->string()->notNull(),
-            'owner_id' => $this->integer()->notNull(),
+            'owner_id' => $this->string()->notNull(),
             'side' => $this->integer()->notNull(),
             'type' => $this->integer()->notNull(),
             'quantity' => $this->integer()->notNull(),

@@ -21,6 +21,7 @@ class OrderResolver
             return true;
         }
         // SELL BY MARKET
+        $order->price = 0;
         if ($order->side == Side::Sell)
         {
             $querySide = Side::Buy->value;
