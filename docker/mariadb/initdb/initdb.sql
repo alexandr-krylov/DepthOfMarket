@@ -1,1 +1,1 @@
-CREATE DATABASE depthofmarket;
+CREATE DATABASE IF NOT EXISTS depthofmarket;
