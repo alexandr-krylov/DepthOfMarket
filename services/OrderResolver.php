@@ -45,10 +45,12 @@ class OrderResolver
             $order->status = Status::Refused;
             return $order->save();
         }
+        $result = [];
         foreach ($query->all() as $DOMorder) {
             if (($DOMorder['quantity'] - $DOMorder['filled']) >= ($order->quantity - $order->filled))
             {
                 // IN NEW ORDER QUANTITY <= THAN IN DOM-ORDER
+                $quantity = $order->quantity - $order->filled;
                 $price = $this->price($order->filled ?? 0, $order->price ?? 0, $order->quantity - $order->filled, $DOMorder['price']);
                 $order1 = (new Order())->findOne($DOMorder['id']);
                 $order1->filled = $DOMorder['filled'] + $order->quantity - $order->filled;
@@ -61,13 +63,15 @@ class OrderResolver
                 $order->price = $price;
                 $order->status = Status::Filled;
                 $order->save();
-                return [$order1->save(), 'filled'];
-                return 'filled';
+                $result[] = ['owner_id' => $order1->owner_id, 'price' => $order1->price, 'quantity' => $quantity];
+                return $result;
+                // return 'filled';
             }
             else
             {
                 //IN NEW ORDER QUANTITY IS BIGGER THAN NEXT ORDER
                 $price  = $this->price($order->filled ?? 0, $order->price ?? 0, $DOMorder['quantity'] - $DOMorder['filled'], $DOMorder['price']);
+                $quantity = $DOMorder['quantity'] - $DOMorder['filled'];
                 $order->price = $price;
                 $order->filled = $order->filled + $DOMorder['quantity'] - $DOMorder['filled'];
                 $order->status = Status::PartialFilled;
@@ -76,6 +80,7 @@ class OrderResolver
                 $order1->filled = $order1->quantity;
                 $order1->status = Status::Filled;
                 $order1->save();
+                $result[] = ['owner_id' => $order1->owner_id, 'price' => $order1->price, 'quantity' => $quantity];
             }
         }
         //LOOP ENDED SO ORDER IS PARTIAL FILLED
