@@ -40,12 +40,13 @@ class OrderResolver
         ->orderBy(['price' => $queryPriceSort, 'created_at' => SORT_ASC]);
         //price = q1 * price1 + q2 * price2 + ... + qn * pricen / sum(q); if not one price.
         // LOOP THROUGH BUY ORDERS FROM EXPENSIVE TO CHEAP AND FROM OLDER TO NEWER
+        $result = [];
         if (empty($query->all())) {
             // CASE NO FOUND BUY ORDERS. MY ORDER WILL REFUSE. DONE
             $order->status = Status::Refused;
-            return $order->save();
+            $order->save();
+            return $result;
         }
-        $result = [];
         foreach ($query->all() as $DOMorder) {
             if (($DOMorder['quantity'] - $DOMorder['filled']) >= ($order->quantity - $order->filled))
             {
