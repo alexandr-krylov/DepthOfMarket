@@ -59,13 +59,13 @@ class OrderResolver
                 } else {
                     $order1->status = Status::PartialFilled;
                 }
+                $order1->save();
                 $order->filled = $order->quantity;
                 $order->price = $price;
                 $order->status = Status::Filled;
                 $order->save();
                 $result[] = ['owner_id' => $order1->owner_id, 'price' => $order1->price, 'quantity' => $quantity];
                 return $result;
-                // return 'filled';
             }
             else
             {
@@ -84,8 +84,7 @@ class OrderResolver
             }
         }
         //LOOP ENDED SO ORDER IS PARTIAL FILLED
-        return 'side sell';
-        return true;
+        return $result;
     }
 
     private function price(int $myQty, $myPrice, int $addQty, $addPrice)
