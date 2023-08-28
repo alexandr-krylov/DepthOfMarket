@@ -65,3 +65,8 @@ GET /api/0/dom/{ticker}
 Продавец выставляет максимальный дисконт
 
 Спецификация лота множество про
+
+## TODO
+
+1. match stupid lots (sell by low cost and buy by high cost)
+2. match old market orders with new limit orders

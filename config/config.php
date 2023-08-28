@@ -27,6 +27,7 @@ return [
                 'GET api/0/order/my/<my_id>' => 'order/viewmy',
                 'GET api/0/dom' => 'dom/view',
                 'DELETE api/0/order/<id>' => 'order/cancel',
+                'GET api/0/marketdata' => 'marketdata/view',
             ],
         ]
     ],
