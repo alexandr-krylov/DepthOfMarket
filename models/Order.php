@@ -10,6 +10,7 @@ use app\enums\Status;
 class Order extends ActiveRecord
 {
     private ?float $_bid = null;
+    private ?float $_ask = null;
 
     public static function tableName()
     {
@@ -44,4 +45,24 @@ class Order extends ActiveRecord
         }
         return $this->_bid;
     }
+    public function setAsk($ask)
+    {
+        $this->_ask = (float)$ask;
+    }
+    public function getAsk()
+    {
+        if ($this->_ask === null)
+        {
+            $query = Order::find(['ticker' => $this->ticker]);
+            $query->select(['MIN(`price`) AS `ask`']);
+            $query->where([
+                'side' => Side::Sell->value,
+                'type' => Type::Limit->value,
+                'status' => [Status::Active->value, Status::PartialFilled->value]
+            ]);
+            $this->setAsk($query->one()['ask']);
+        }
+        return $this->_ask;
+    }
+
 }

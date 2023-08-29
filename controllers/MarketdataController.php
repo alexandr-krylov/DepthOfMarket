@@ -9,9 +9,8 @@ class MarketdataController extends Controller
 {
     public function actionView()
     {
-        return Order::find($this->request->get())->one()->bid;
-        // var_dump($this->request->get());
-
+        $order = Order::find($this->request->get())->one();
+        return (object)['ask' => $order->ask, 'bid' => $order->bid];
     }
     public function behaviors()
     {
