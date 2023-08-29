@@ -34,9 +34,10 @@ class Order extends ActiveRecord
     {
         if ($this->_bid === null)
         {
-            $query = Order::find(['ticker' => $this->ticker]);
+            $query = Order::find();
             $query->select(['MAX(`price`) AS `bid`']);
             $query->where([
+                'ticker' => $this->ticker,
                 'side' => Side::Buy->value,
                 'type' => Type::Limit->value,
                 'status' => [Status::Active->value, Status::PartialFilled->value]
@@ -53,9 +54,10 @@ class Order extends ActiveRecord
     {
         if ($this->_ask === null)
         {
-            $query = Order::find(['ticker' => $this->ticker]);
+            $query = Order::find();
             $query->select(['MIN(`price`) AS `ask`']);
             $query->where([
+                'ticker' => $this->ticker,
                 'side' => Side::Sell->value,
                 'type' => Type::Limit->value,
                 'status' => [Status::Active->value, Status::PartialFilled->value]
