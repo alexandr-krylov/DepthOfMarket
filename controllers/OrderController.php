@@ -51,6 +51,20 @@ class OrderController extends Controller
         return $result;
     }
 
+    public function actionRedemption()
+    {   if (null === $this->request->post('ticker'))
+        {
+            return false;
+        }
+        $orders = Order::findAll(['ticker' => $this->request->post('ticker')]);
+        foreach ($orders as $order)
+        {
+            $order->status = Status::Redempted->value;
+            $order->save();
+        }
+        return true;
+    }
+
     public function behaviors()
     {
         $behaviors = parent::behaviors();

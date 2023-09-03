@@ -9,4 +9,5 @@ enum Status: int
     case PartialFilled = 3;
     case Canseled = 4;
     case Refused = 5;
+    case Redempted = 6;
 }
