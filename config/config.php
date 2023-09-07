@@ -29,6 +29,7 @@ return [
                 'DELETE api/0/order/<id>' => 'order/cancel',
                 'GET api/0/marketdata' => 'marketdata/view',
                 'PUT api/0/order' => 'order/redemption',
+                'GET api/0/volume' => 'volume/view',
             ],
         ]
     ],
