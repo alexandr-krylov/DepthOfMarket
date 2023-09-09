@@ -8,6 +8,7 @@ use app\enums\Status;
 use app\enums\Type;
 use app\enums\Side;
 use app\services\OrderResolver;
+use Exception;
 
 class OrderController extends Controller
 {
@@ -38,17 +39,21 @@ class OrderController extends Controller
         return $result;
     }
 
-    public function actionViewmy($my_id)
+    public function actionViewmy()
     {
-        return Order::find()->where(['owner_id' => $my_id])->all();
+        return Order::find()->where(['owner_id' => $this->request->get('owner_id')])->all();
     }
 
-    public function actionCancel($id)
+    public function actionCancel()
     {
-        $order = Order::findOne($id);
-        $order->status = Status::Canseled;
-        $result = $order->save();
-        return $result;
+        $order = Order::findOne($this->request->get('id'));
+        if ($order->status == Status::Active->value or $order->status == Status::PartialFilled->value)
+        {
+            $order->status = Status::Canseled;
+            $result = $order->save();
+            return $result;
+        }
+        throw new Exception('Order couldn\'t be canceled');
     }
 
     public function actionRedemption()
