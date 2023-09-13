@@ -54,7 +54,7 @@ GET /api/0/dom/{ticker}
 * Active: created but not sold or bought
 * Filled: fully bought or sold
 * PartialFilled: partial bought or sold
-* Canseled: deleted by owner
+* Canceled: deleted by owner
 * Refused: not created due to auction conditions (not enough funds, e.t.c.)
 
 3. Conditions for stopping auction

@@ -41,17 +41,26 @@ class OrderController extends Controller
 
     public function actionViewmy()
     {
-        return Order::find()->where(['owner_id' => $this->request->get('owner_id')])->all();
+        return Order::find()
+        ->select(['*', 'ROUND(price, 2) AS price'])
+        ->where(['owner_id' => $this->request->get('owner_id')])
+        ->all();
     }
 
     public function actionCancel()
     {
-        $order = Order::findOne($this->request->get('id'));
-        if ($order->status == Status::Active->value or $order->status == Status::PartialFilled->value)
+        $order = Order::findOne($this->request->post('id'));
+        if (
+            (
+                $order->status == Status::Active->value
+             or $order->status == Status::PartialFilled->value
+            )
+             and $order->type == Type::Limit->value
+        )
         {
-            $order->status = Status::Canseled;
-            $result = $order->save();
-            return $result;
+            $order->status = Status::Canceled->value;
+            $order->save();
+            return $order;
         }
         throw new Exception('Order couldn\'t be canceled');
     }

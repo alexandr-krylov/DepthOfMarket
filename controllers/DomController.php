@@ -14,7 +14,12 @@ class DomController extends Controller
     {
         $ticker = $this->request->get('ticker');
         $redOrders = (new Query())
-        ->select(['price', 'quantity' => 'SUM(quantity - filled)', 'volume' => 'price * SUM(quantity - filled)', 'side'])
+        ->select([
+            'ROUND(price, 2) AS price',
+            'quantity' => 'SUM(quantity - filled)',
+            'volume' => 'ROUND(price * SUM(quantity - filled), 2)',
+            'side'
+        ])
         ->from('orders')
         ->where([
             'ticker' => $ticker,
@@ -26,7 +31,12 @@ class DomController extends Controller
         ->orderBy(['price' => SORT_DESC])->all();
 
         $greenOrders = (new Query())
-        ->select(['price', 'quantity' => 'SUM(quantity - filled)', 'volume' => 'price * SUM(quantity - filled)', 'side'])
+        ->select([
+            'price' => 'ROUND(price, 2)',
+            'quantity' => 'SUM(quantity - filled)',
+            'volume' => 'ROUND(price * SUM(quantity - filled), 2)',
+            'side'
+        ])
         ->from('orders')
         ->where([
             'ticker' => $ticker,
