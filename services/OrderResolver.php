@@ -16,12 +16,22 @@ class OrderResolver
     */
     public function resolve(Order $order)
     {
-        if ($order->type != Type::Market)
-        {
-            return true;
-        }
+        // if ($order->type == Type::Limit)
+        // {
+        //     if ($order->side == Side::Sell)
+        //     {
+        //         $querySide = Side::Buy->value;
+        //         $queryPriceSort = SORT_DESC;
+        //     }
+        //     var_dump('LIMIT!!!');
+        //     die;
+        //     return $this->resolveLimitOrder($order);
+        // }
         // SELL BY MARKET
-        $order->price = 0;
+        if ($order->type == Type::Market)
+        {
+            $order->price = 0;
+        }
         if ($order->side == Side::Sell)
         {
             $querySide = Side::Buy->value;
@@ -91,5 +101,9 @@ class OrderResolver
     private function price(int $myQty, $myPrice, int $addQty, $addPrice)
     {
         return ($myQty * $myPrice + $addQty * $addPrice) / ($myQty + $addQty);
+    }
+    private function resolveLimitOrder(Order $order)
+    {
+
     }
 }
