@@ -43,7 +43,7 @@ class OrderController extends Controller
     {
         return Order::find()
         ->select(['*', 'ROUND(price, 2) AS price'])
-        ->where(['owner_id' => $this->request->get('owner_id')])
+        ->where(['owner_id' => $this->request->get('owner_id'), 'status' => [Status::Active->value, Status::PartialFilled->value]])
         ->all();
     }
 
